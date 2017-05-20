@@ -23,7 +23,7 @@ struct my_list {
 static void __list_add(struct list_head *new, struct list_head *prev,
 		       struct list_head *next)
 {
-	printf("%s %d add new %lx to %lx %lx\n",__func__, __LINE__, new, prev, next);
+	/*printf("%s %d add new %lx to %lx %lx\n",__func__, __LINE__, new, prev, next);*/
 	next->prev = new;	
 	prev->next = new;
 	new->next = next;
@@ -51,7 +51,7 @@ static void list_del(struct list_head *entry)
 	__list_del(entry->prev, entry->next);
 }
 
-#define list_entry(ptr, type, member) \ 
+#define list_entry(ptr, type, member) \
     ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member))) 
 
 #define list_for_each(pos, head) \
@@ -82,8 +82,11 @@ int main(void)
 
 	struct list_head *entry;
 	list_for_each(entry, &list) {
-	for (entry = &(ma.head); entry != (&(ma.head))->prev; entry = (&(ma.head))->next) {
-		printf("%lx \n", entry);
+		struct my_list *m = list_entry(entry, struct my_list, head);
+		printf("%d\n", m->data);
+	}
+	list_del(&(mf.head));
+	list_for_each(entry, &list) {
 		struct my_list *m = list_entry(entry, struct my_list, head);
 		printf("%d\n", m->data);
 	}
