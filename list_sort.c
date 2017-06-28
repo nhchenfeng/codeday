@@ -42,14 +42,14 @@ int get_key(struct blist *head, int position)
 	int i;
 	struct blist *temp = head;
 	for(i = 0; i < position; i++) {
-		temp = temp->next;	
+		temp = temp->next;
 	}
 	return temp->key;
 }
 
 struct blist* swap(struct blist *head, int m, int n)
 {
-	int i;
+ int i;
 	struct blist *left;
 	struct blist *right;
 	struct blist *temp;
@@ -57,16 +57,16 @@ struct blist* swap(struct blist *head, int m, int n)
 	/*printf ("to swap %d %d\n", m, n);*/
 	temp = head;
 	for(i = 0; i < m; i++) {
-		temp = temp->next;	
+		temp = temp->next;
 	}
 	left = temp;
 
 	temp = head;
 	for(i = 0; i < n; i++) {
-		temp = temp->next;	
+		temp = temp->next;
 	}
 	right = temp;
-	
+
 	temp = temp_data;
 	temp->prev = right->prev;
 	temp->next = right->next;
@@ -92,7 +92,7 @@ struct blist* swap(struct blist *head, int m, int n)
 
 struct blist *sort_list(struct blist *head, int low, int high)
 {
-	int i, j;	
+	int i, j;
 	struct blist *temp_head;
 	temp_head = head;
 	for (j = high; j >=0; j--) {
@@ -112,12 +112,12 @@ void add_list(struct blist *head, struct blist *add)
 }
 
 int main() {
-	struct blist a = {0};	
-	struct blist b = {0};	
-	struct blist c = {0};	
-	struct blist d = {0};	
-	struct blist e = {0};	
-	struct blist f = {0};	
+	struct blist a = {0};
+	struct blist b = {0};
+	struct blist c = {0};
+	struct blist d = {0};
+	struct blist e = {0};
+	struct blist f = {0};
 	a.key = 3;
 	b.key = 2;
 	c.key = 1;
