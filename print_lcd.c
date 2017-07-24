@@ -72,8 +72,10 @@ void print_n(char *str, int len, int end)
 	int i;
 	int j = 0;
 	for (i = (len + 2); j < 2 * len + 3; i = i + len + 3, j ++) {
-		if (end)
+		if (end) {
+			printf("%d\n", i);
 			str[i] = '\n';
+		}
 		else
 			str[i] = 0;
 	}
