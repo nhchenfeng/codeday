@@ -17,15 +17,6 @@
 #define DECLARE_BITMAP(name,bits) \
 		uint64_t name[BITS_TO_LONGS(bits)]
 
-/**
- * __set_bit - Set a bit in memory
- * @nr: the bit to set
- * @addr: the address to start counting from
- *
- * Unlike set_bit(), this function is non-atomic and may be reordered.
- * If it's called on the same region of memory simultaneously, the effect
- * may be that only one operation succeeds.
- */
 static void set_bit(int nr, volatile uint64_t *addr)
 {
 	uint64_t mask = BITOP_MASK(nr);
@@ -42,11 +33,6 @@ static void clear_bit(int nr, volatile uint64_t *addr)
 	*p &= ~mask;
 }
 
-/**
- * test_bit - Determine whether a bit is set
- * @nr: bit number to test
- * @addr: Address to start counting from
- */
 static int test_bit(int nr, const volatile uint64_t *addr)
 {
 	return 1UL & (addr[BITOP_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
