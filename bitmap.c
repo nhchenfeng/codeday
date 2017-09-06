@@ -14,6 +14,12 @@
 #define BITMAP_LAST_WORD_MASK(nbits)     (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
 #define small_const_nbits(nbits)         ((nbits) <= BITS_PER_LONG)
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
+#define min_t(type, x, y) ({				\
+		type __min1 = (x);                      \
+		type __min2 = (y);                      \
+		__min1 < __min2 ? __min1 : __min2; })
 #define DECLARE_BITMAP(name,bits) \
 		uint64_t name[BITS_TO_LONGS(bits)]
 
@@ -48,10 +54,42 @@ static inline void bitmap_zero(uint64_t *dst, unsigned int nbits)
 	}
 }
 
+unsigned int bitmap_from_uint32_tarray(unsigned long *bitmap, unsigned int nbits,
+		     const uint32_t *buf, unsigned int nwords)
+{
+	unsigned int dst_idx, src_idx;
+
+	for (src_idx = dst_idx = 0; dst_idx < BITS_TO_LONGS(nbits); ++dst_idx) {
+		unsigned long part = 0;
+
+		if (src_idx < nwords)
+			part = buf[src_idx++];
+
+#if BITS_PER_LONG == 64
+		if (src_idx < nwords)
+			part |= ((unsigned long) buf[src_idx++]) << 32;
+#endif
+
+		if (dst_idx < nbits/BITS_PER_LONG)
+			bitmap[dst_idx] = part;
+		else {
+			unsigned long mask = BITMAP_LAST_WORD_MASK(nbits);
+
+			bitmap[dst_idx] = (bitmap[dst_idx] & ~mask)
+				| (part & mask);
+		}
+	}
+
+	return min_t(unsigned int, nbits, 32*nwords);
+}
+
 int main()
 {
 	DECLARE_BITMAP(local_map, 100);
+	unsigned int map[4]; /*3 * 30 = 120bits*/
+	bitmap_from_uint32_tarray(local_map, 100, map, 4);
 	bitmap_zero(local_map, 100);
+	
 	set_bit(0, local_map);
 	set_bit(1, local_map);
 	set_bit(3, local_map);
