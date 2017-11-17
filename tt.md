@@ -1,22 +1,3 @@
-/******************************************************************************
-
-Copyright (C), 2001-2011, Huawei Tech. Co., Ltd.
-
-******************************************************************************
-File Name     :
-Version       :
-Author        :
-Created       : 2010/3
-Last Modified :
-Description   :
-Function List :
-
-History       :
-1.Date        : 2010/3
-Author      :
-Modification: Created file
-
-******************************************************************************/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
