@@ -77,34 +77,48 @@ list_add_tail(struct list_head *entry, struct list_head *head)
     __list_add(entry, head->prev, head);
 }
 
-static inline void
-list_insert(struct list_head *entry, struct list_head *head)
+static int list_insert(struct list_head *entry, struct list_head *head)
 {
+	struct list_head *curr, *next;
+	list_for_each_safe(curr, next, head) {
+		if (entry == curr) {
+			printf("alread insert");
+			return -1;
+		}
+	}
 	list_add_tail(entry, head);
+	return 0;
 }
 
 static inline struct list_head *
 list_remove(struct list_head *head)
 {
 	struct list_head *tmp = head->next;
-	if (head->next) {
+	if (!list_empty(head)) {
 		list_del(tmp);
 		return tmp;
 	}
 	return NULL;
 }
 
-static inline void
-list_push(struct list_head *entry, struct list_head *head)
+static int list_push(struct list_head *entry, struct list_head *head)
 {
+	struct list_head *curr, *next;
+	list_for_each_safe(curr, next, head) {
+		if (entry == curr) {
+			printf("alread insert");
+			return -1;
+		}
+	}
 	list_add(entry, head);
+	return 0;
 }
 
 static inline struct list_head *
 list_pop(struct list_head *head)
 {
 	struct list_head *tmp = head->next;
-	if (head->next) {
+	if (!list_empty(head)) {
 		list_del(tmp);
 		return tmp;
 	}

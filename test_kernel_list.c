@@ -25,10 +25,14 @@ int main()
 	e->data = 5;
 	/* test list insert remove */
 	list_insert(&a->entry, &mhead);
+	list_remove(&mhead);
 	list_insert(&b->entry, &mhead);
 	list_insert(&c->entry, &mhead);
+	list_remove(&mhead);
 	list_insert(&d->entry, &mhead);
 	list_insert(&e->entry, &mhead);
+	list_remove(&mhead);
+	/*list_insert(&e->entry, &mhead);*/
 	list_for_each_safe(curr, next, &mhead) {
 		cur_node = list_entry(curr, struct node, entry);
 		printf("curr node %d\n", cur_node->data);
@@ -46,9 +50,13 @@ int main()
 
 	/* test stack push pop */
 	list_push(&a->entry, &mhead);
+	list_remove(&mhead);
 	list_push(&b->entry, &mhead);
+	list_remove(&mhead);
 	list_push(&c->entry, &mhead);
 	list_push(&d->entry, &mhead);
+	list_remove(&mhead);
+	list_remove(&mhead);
 	list_push(&e->entry, &mhead);
 	list_for_each_safe(curr, next, &mhead) {
 		cur_node = list_entry(curr, struct node, entry);
