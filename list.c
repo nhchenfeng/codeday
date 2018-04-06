@@ -14,7 +14,7 @@ struct my_list {
 /*#define LIST_HEAD_INIT(name) { &(name), &(name) }*/
 
 /*#define LIST_HEAD(name) \*/
-		/*struct list_head name = LIST_HEAD_INIT(name)*/
+/*struct list_head name = LIST_HEAD_INIT(name)*/
 
 #define INIT_LIST_HEAD(ptr) do { \
 		(ptr)->next = (ptr); (ptr)->prev = (ptr); \
@@ -24,7 +24,7 @@ static void __list_add(struct list_head *new, struct list_head *prev,
 		       struct list_head *next)
 {
 	/*printf("%s %d add new %lx to %lx %lx\n",__func__, __LINE__, new, prev, next);*/
-	next->prev = new;	
+	next->prev = new;
 	prev->next = new;
 	new->next = next;
 	new->prev = prev;
@@ -52,7 +52,7 @@ static void list_del(struct list_head *entry)
 }
 
 #define list_entry(ptr, type, member) \
-    ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member))) 
+    ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member)))
 
 #define list_for_each(pos, head) \
 			for (pos = (head)->next; pos != (head); pos = pos->next)
@@ -70,7 +70,7 @@ int main(void)
 	md.data = 4;
 	me.data = 5;
 	mf.data = 6;
-	
+
 	struct list_head list;
 	INIT_LIST_HEAD(&list);
 	list_add_tail(&(ma.head), &list);
