@@ -82,7 +82,7 @@ static int list_insert(struct list_head *entry, struct list_head *head)
 	struct list_head *curr, *next;
 	list_for_each_safe(curr, next, head) {
 		if (entry == curr) {
-			printf("alread insert");
+			printf("already insert");
 			return -1;
 		}
 	}
