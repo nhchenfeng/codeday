@@ -7,9 +7,33 @@ struct node {
 	int data;
 };
 
+void test()
+{
+	int i;
+	struct list_head *curr;
+	struct list_head *next;
+	struct node *cur_node;
+	for (i = 0; i < 10000; i++) {
+		struct node *t = (struct node *)malloc(sizeof(*t));
+		printf("%d\n", i);
+		if (t == NULL) {
+			printf("oom\n");
+		}
+		list_insert(&t->entry, &mhead);
+	}
+	i = 0;
+	list_for_each_safe(curr, next, &mhead) {
+		printf("%d\n", i++);
+		cur_node = list_entry(curr, struct node, entry);
+		list_remove(&mhead);
+		free(cur_node);
+	}
+
+}
 
 int main()
 {
+	test();
 	struct list_head *curr;
 	struct list_head *next;
 	struct node *cur_node;
