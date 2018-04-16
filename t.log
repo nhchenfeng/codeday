@@ -1,0 +1,140 @@
+add fifo 0
+add normal 1
+add normal 2
+add normal 3
+already add pid 0
+no fifo task to run curr
+schedule normal pid 1 on cpu 0 exec_length 3 
+time [0] normal
+no fifo task to run curr
+schedule normal pid 1 on cpu 0 exec_length 2 
+time [1] normal
+schedule fifo pid 0 on cpu 0 exec_length 0 
+time [2] fifo
+no fifo task to run curr
+schedule normal pid 2 on cpu 0 exec_length 1 
+time [3] normal
+no fifo task to run curr
+schedule normal pid 2 on cpu 0 exec_length 0 
+time [4] normal
+no fifo task to run curr
+schedule normal pid 1 on cpu 0 exec_length 1 
+time [5] normal
+no fifo task to run curr
+schedule normal pid 1 on cpu 0 exec_length 0 
+time [6] normal
+no fifo task to run curr
+no normal task to run curr
+time [7] no task
+no fifo task to run curr
+schedule normal pid 3 on cpu 0 exec_length 1 
+time [8] normal
+no fifo task to run curr
+schedule normal pid 3 on cpu 0 exec_length 0 
+time [9] normal
+time 0 pid 1 tick 2
+time 1 pid 1 tick 2
+time 2 pid 0 tick 2
+time 3 pid 2 tick 2
+time 4 pid 2 tick 2
+time 5 pid 1 tick 2
+time 6 pid 1 tick 2
+time 8 pid 3 tick 2
+time 9 pid 3 tick 2
+time 0 pid 1 tick 3
+time 1 pid 1 tick 3
+time 2 pid 0 tick 3
+time 3 pid 2 tick 3
+time 4 pid 2 tick 3
+time 5 pid 1 tick 3
+time 6 pid 1 tick 3
+time 8 pid 3 tick 3
+time 9 pid 3 tick 3
+time 0 pid 1 tick 4
+time 1 pid 1 tick 4
+time 2 pid 0 tick 4
+time 3 pid 2 tick 4
+time 4 pid 2 tick 4
+time 5 pid 1 tick 4
+time 6 pid 1 tick 4
+time 8 pid 3 tick 4
+time 9 pid 3 tick 4
+time 0 pid 1 tick 5
+time 1 pid 1 tick 5
+time 2 pid 0 tick 5
+time 3 pid 2 tick 5
+time 4 pid 2 tick 5
+time 5 pid 1 tick 5
+time 6 pid 1 tick 5
+time 8 pid 3 tick 5
+time 9 pid 3 tick 5
+time 0 pid 1 tick 6
+time 1 pid 1 tick 6
+time 2 pid 0 tick 6
+time 3 pid 2 tick 6
+time 4 pid 2 tick 6
+time 5 pid 1 tick 6
+time 6 pid 1 tick 6
+time 8 pid 3 tick 6
+time 9 pid 3 tick 6
+time 0 pid 1 tick 7
+time 1 pid 1 tick 7
+time 2 pid 0 tick 7
+time 3 pid 2 tick 7
+time 4 pid 2 tick 7
+time 5 pid 1 tick 7
+time 6 pid 1 tick 7
+time 8 pid 3 tick 7
+time 9 pid 3 tick 7
+pid 3
+time 0 pid 1 tick 8
+time 1 pid 1 tick 8
+time 2 pid 0 tick 8
+time 3 pid 2 tick 8
+time 4 pid 2 tick 8
+time 5 pid 1 tick 8
+time 6 pid 1 tick 8
+time 8 pid 3 tick 8
+time 9 pid 3 tick 8
+time 0 pid 1 tick 9
+time 1 pid 1 tick 9
+time 2 pid 0 tick 9
+time 3 pid 2 tick 9
+time 4 pid 2 tick 9
+time 5 pid 1 tick 9
+time 6 pid 1 tick 9
+time 8 pid 3 tick 9
+time 9 pid 3 tick 9
+time 0 pid 1 tick 10
+time 1 pid 1 tick 10
+time 2 pid 0 tick 10
+time 3 pid 2 tick 10
+time 4 pid 2 tick 10
+time 5 pid 1 tick 10
+time 6 pid 1 tick 10
+time 8 pid 3 tick 10
+time 9 pid 3 tick 10
+pid 3
+time 0 pid 1 tick 11
+time 1 pid 1 tick 11
+time 2 pid 0 tick 11
+time 3 pid 2 tick 11
+time 4 pid 2 tick 11
+time 5 pid 1 tick 11
+time 6 pid 1 tick 11
+time 8 pid 3 tick 11
+time 9 pid 3 tick 11
+pid 3
+expect 0 got -2
+expect 2 got -2
+expect 2 got -1
+expect 1 got -1
+expect 1 got -1
+expect -1 got -1
+expect 3 got -1
+expect 3 got 3
+expect -1 got -1
+expect -1 got -1
+expect -2 got 3
+query test failed
+failed
