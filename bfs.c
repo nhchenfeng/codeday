@@ -10,6 +10,7 @@ struct bnode {
 	int visited;
 	char data;
 	struct list_head entry;
+	int depth;
 };
 
 enum POSITION {
@@ -62,6 +63,7 @@ void visit_and_mark(struct bnode *node)
 
 int get_found_high(struct bnode *node, struct bnode *root)
 {
+	int i;
 	int high = 0;
 	struct bnode *tmp = node;
 	while (tmp != root) {
@@ -69,13 +71,24 @@ int get_found_high(struct bnode *node, struct bnode *root)
 		printf("%c\n", tmp->data);
 		high++;
 	}
+	struct list_head *curr;
+	struct list_head *next;
+	struct bnode *cur_node;
+	for (i = 0; i < 10; i++) {
+		list_for_each_safe(curr, next, &mlist) {
+			cur_node = list_entry(curr, struct bnode, entry);
+			if (cur_node->depth == i) {
+				printf("%d %c", i, cur_node->data);
+			}
+		}
+	}
 	return high;
 }
 
 int bfs(struct bnode *root, char find)
 {
 	int found = 0;
-	int high = 0;
+	int high = root->depth;
 	struct list_head *curr;
 	struct bnode *curr_node;
 	if (root->data == find) {
@@ -89,16 +102,18 @@ int bfs(struct bnode *root, char find)
 		curr_node = list_entry(curr, struct bnode, entry);
 		visit_and_mark(curr_node);
 		if (curr_node->data == find) {
-			printf("found %c\n", find);
+			printf("found %c depth %d\n", find, curr_node->depth);
 			high = get_found_high(curr_node, root);
 		}
 		if (curr_node->left && !curr_node->left->visited) {
 			curr_node->left->parent = curr_node;
+			curr_node->left->depth = curr_node->depth + 1;
 			printf("here insert_node %c\n", curr_node->left->data);
 			list_insert(&curr_node->left->entry, &mlist);
 		}
 		if (curr_node->right && !curr_node->right->visited) {
 			curr_node->right->parent = curr_node;
+			curr_node->right->depth = curr_node->depth + 1;
 			printf("here insert_node %c\n", curr_node->right->data);
 			list_insert(&curr_node->right->entry, &mlist);
 		}
@@ -116,6 +131,7 @@ struct bnode *init_bnode(char data)
 
 int main(void)
 {
+	int i;
 	node_a = init_bnode('A');
 	node_b = init_bnode('B');
 	node_c = init_bnode('C');
