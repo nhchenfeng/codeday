@@ -35,14 +35,10 @@ static int tail;
 
 void show_path(struct node *np)
 {
-	int i = 0;
 	printf("%s ", np->data);
 	while(np->parent) {
 		np = np->parent;
 		printf("<- %s ", np->data);
-		i++;
-		if (i > 20)
-			return;
 	}
 	info("\n");
 }
@@ -53,7 +49,7 @@ static void list_add(struct node *n)
 	memcpy(&list[head], n, sizeof(struct node));
 	head++;
 	if (head == MAX_NODE) {
-		printf("head -> 0 tail %d\n", tail);
+		printf("may error\n");
 		head = 0;
 	}
 }
