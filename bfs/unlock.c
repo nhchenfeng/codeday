@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#define debug
+#define debug
 
 #ifdef debug
 #define info printf
@@ -39,7 +39,9 @@ void show_path(struct node *np)
 	while(np->parent) {
 		np = np->parent;
 		printf("<- %s ", np->data);
+
 	}
+	
 	info("\n");
 }
 
@@ -157,6 +159,7 @@ int bfs(char *input) {
 		}
 	}
 
+
 	/* never be here */
 	return 0;
 }
@@ -165,6 +168,7 @@ int main()
 {
 	int step;
 	freopen("input.txt", "r", stdin);
+	printf("hello world\n");
 	gets(input);
 	gets(key);
 	step = bfs(input);

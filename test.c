@@ -23,6 +23,7 @@ int main()
 		{1, 2},
 		{2, 2}
 	};
+	printf("hello world\n");
 	printf("%lx\n", a);
 	int (*b)[2] = &a[0];
 	print(a);

@@ -10,17 +10,17 @@
  *     struct TreeNode *right;
  * };
  */
-
 #define LIST_MAX                100000
 
 struct ret_node {
 	int data;
 	int total;
 	int step;
-	struct ret_node *pre;
+	struct ret_node *parent;
+	struct TreeNode *tree_node;
 };
 
-static struct ret_node node_list[100000];
+static struct ret_node node_list[LIST_MAX];
 static int list_first;
 static int list_last;
 static int **ret_arrary;
@@ -35,24 +35,27 @@ int list_empty()
 
 int list_full()
 {
-	if ((list_last + 1) % LIST_MAX == list_fist)
+	if ((list_first + 1) % LIST_MAX == list_last)
 		return 1;
 	return 0;
 }
 
 int list_insert(struct ret_node node){
-	if (list_full)
+	if (list_full())
 		return 1;
 	node_list[list_first] = node;
-	list_first == (list_first + 1) % LIST_MAX;
+	list_first = (list_first + 1) % LIST_MAX;
+    return 0;
 }
 
 int list_pop() {
 	if (list_empty())
 		return 1;
 
-	memset(&node_list[list_last], 0, sizeof(node_list[list_last]));
-	list_last == (list_fist + 1) % LIST_MAX;
+	//memset(&node_list[list_last], 0, sizeof(node_list[list_last]));
+    //node_list[list_last].parent = NULL;
+	list_last = (list_last + 1) % LIST_MAX;
+    return 0;
 }
 
 void add_ret(struct ret_node *node, int *size, int** returnColumnSizes)
@@ -61,10 +64,10 @@ void add_ret(struct ret_node *node, int *size, int** returnColumnSizes)
 
 	printf("node step %d\n", node->step);
 	ret_arrary[*size] = (int *)malloc(sizeof(int) * node->step);
-	returnColumnSizes[*size] = (int *)malloc(sizeof(int));
-	*returnColumnSizes[*size] = node->step;
+	(*returnColumnSizes)[*size] = node->step;
 	for (i = node->step; i > 0; i--) {
-		ret_arrary[*size][i] = node->data;
+		ret_arrary[*size][i - 1] = node->data;
+        printf("data %d\n", node->data);
 		node = node->parent;
 	}
 	*size += 1;
@@ -73,40 +76,44 @@ void add_ret(struct ret_node *node, int *size, int** returnColumnSizes)
 int bfs(struct TreeNode* root, int sum, int* returnSize, int** returnColumnSizes)
 {
 	struct ret_node tmp_node = {0};
-	struct ret_node *p_node = &tmp_node;
+	struct TreeNode *t_node = root;
+	struct ret_node *curr_node = &tmp_node;
 	struct ret_node *next_node = &tmp_node;
 
-	p_node->data = root->val;
-	p_node->total = root->val;
-	p_node->step = 1;
+	next_node->data = root->val;
+	next_node->total = root->val;
+	next_node->step = 1;
+	next_node->tree_node = t_node;
+    next_node->total = t_node->val;
+	list_insert(*next_node);
 
-	list_insert(*p_node);
 	while (!list_empty()) {
-		p_node = &node_list[list_last];
+		curr_node = &node_list[list_last];
+		t_node = curr_node->tree_node;
 		list_pop();
-		if (p_node->left) {
-			next_node->data = p_node->left->val;
-			next_node->total = p_node->total + p_node->data;
-			next_node->parent = p_node;
-			next_node->step = p_node->step + 1;
-			if (next_node->total <= sum) {
-				list_insert(*next_node);
-			}
+        printf("pop %d at depth %d left %x right %x\n", t_node->val, curr_node->step, t_node->left, t_node->right);
+		if (t_node->left) {
+			next_node->data = t_node->left->val;
+			next_node->total = curr_node->total + t_node->left->val;
+			next_node->parent = curr_node;
+			next_node->step = curr_node->step + 1;
+            next_node->tree_node = t_node->left;
+			list_insert(*next_node);
 		}
-		if (p_node->right) {
-			next_node->data = p_node->right->val;
-			next_node->total = p_node->total + p_node->data;
-			next_node->parent = p_node;
-			next_node->step = p_node->step + 1;
-			if (next_node->total <= sum) {
-				list_insert(*next_node);
-			}
+		if (t_node->right) {
+			next_node->data = t_node->right->val;
+			next_node->total = curr_node->total + t_node->right->val;
+			next_node->parent = curr_node;
+			next_node->step = curr_node->step + 1;
+            next_node->tree_node = t_node->right;
+			list_insert(*next_node);
 		}
-		if (!p_node->right && !p_node->left) {
-			if (p_node->total == sum)
-				add_ret(p_node, returnSize, returnColumnSizes);
+		if (!t_node->right && !t_node->left) {
+			if (curr_node->total == sum)
+				add_ret(curr_node, returnSize, returnColumnSizes);
 		}
 	}
+    return 0;
 }
 /**
  * Return an array of arrays of size *returnSize.
@@ -115,18 +122,17 @@ int bfs(struct TreeNode* root, int sum, int* returnSize, int** returnColumnSizes
  */
 int** pathSum(struct TreeNode* root, int sum, int* returnSize, int** returnColumnSizes)
 {
-	memset(not_list , 0, sizeof(node_list));
+	if (!root) {
+		*returnSize = 0;
+		return NULL;
+	}
+	memset(node_list , 0, sizeof(node_list));
 	ret_arrary = (int **)malloc(1024 * sizeof(int *));
 	*returnColumnSizes = (int *)malloc(1024 * sizeof(int));
 	*returnSize = 0;
+    list_first = 0;
+    list_last = 0;
 
-	if (!root || !returnSize || !returnColumnSizes)
-		return 0;
-
+    bfs(root, sum, returnSize, returnColumnSizes);
 	return ret_arrary;
-}
-
-int main()
-{
-	return 0;
 }

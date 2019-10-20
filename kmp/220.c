@@ -5,7 +5,7 @@
 /* 1 10 6 4 5 - > 1 5 4 2 3
  * 1 4 5 6 10
  * */
-void change_str(char *str, num)
+void change_str(char *str, int num)
 {
 	int i, j, k;
 	int min = 0xffffff;

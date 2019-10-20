@@ -1,0 +1,30 @@
+{
+        // Use IntelliSense to learn about possible attributes.
+        // Hover to view descriptions of existing attributes.
+        // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+        "version": "0.2.0",
+        "configurations": [
+                {
+                        "type": "lldb",
+                        "request": "launch",
+                        "preLaunchTask": "clang build",
+                        "name": "codelldb",
+                        "program": "${fileDirname}/${fileBasenameNoExtension}.out"
+                },
+                {
+                        "name": "c++ lldb",
+                        "type": "cppdbg",
+                        "request": "launch",
+                        "targetArchitecture": "x64",
+                        "preLaunchTask": "clang build",
+                        "program": "${fileDirname}/${fileBasenameNoExtension}.out",
+                        "args": [],
+                        "stopAtEntry": true,
+                        "cwd": "${workspaceFolder}",
+                        "environment": [],
+                        "externalConsole": true,
+                        "MIMode": "lldb"
+                },
+                
+        ]
+}

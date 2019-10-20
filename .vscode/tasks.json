@@ -1,0 +1,43 @@
+{
+        "version": "2.0.0",
+        "tasks": [
+                {
+                        "type": "shell",
+                        "label": "gcc build",
+                        "command": "/usr/local/bin/gcc-8",
+                        "args": [
+                                "-g",
+                                "${file}",
+                                "-o",
+                                "${fileDirname}/${fileBasenameNoExtension}.out"
+                        ],
+                        "options": {
+                                "cwd": "/usr/local/bin"
+                        },
+                        "problemMatcher": [
+                                "$gcc"
+                        ],
+                        "group": "build"
+                },
+                {
+                        "type": "shell",
+                        "label": "clang build",
+                        "command": "/usr/bin/clang",
+                        "args": [
+                                "-ggdb3",
+                                "-O0",
+                                "-std=c99",
+                                "${file}",
+                                "-o",
+                                "${fileDirname}/${fileBasenameNoExtension}.out"
+                        ],
+                        "options": {
+                                "cwd": "/usr/bin"
+                        },
+                        "problemMatcher": [
+                                "$gcc"
+                        ],
+                        "group": "build"
+                }
+        ]
+}
