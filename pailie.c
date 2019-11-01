@@ -6,6 +6,7 @@
 static int array[MAX_NODE];
 static int visit[MAX_NODE];
 static int out[MAX_NODE];
+https://www.cnblogs.com/en-heng/p/7512059.html
 
 void dfs_pailie(int *data, int step, int size)
 {
