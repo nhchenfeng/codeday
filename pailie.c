@@ -6,47 +6,47 @@
 static int array[MAX_NODE];
 static int visit[MAX_NODE];
 static int out[MAX_NODE];
-https://www.cnblogs.com/en-heng/p/7512059.html
+static int sum;
 
-void dfs_pailie(int *data, int step, int size)
+void dfs_pailie(int *data, int start, int step, int choose, int total)
 {
         int index;
 
-        if (step == size) {
-                for (index = 0; index < size; index++) {
+        if (step == choose) {
+                sum ++;
+                for (index = 0; index < choose; index++) {
                         printf("%d ", out[index]);
                 }
-                printf("\n");
+                printf("pailie %d\n", sum);
         }
-        for (index = 0; index < size; index++) {
+        for (index = 0; index < total; index++) {
                 if (!visit[index]) {
                         out[step] = data[index];
                         visit[index] = 1;
-                        dfs_pailie(data, step + 1, size);
+                        dfs_pailie(data, 0, step + 1, choose, total);
                         visit[index] = 0;
                 }
         }
 }
 
-void dfs_zuhe(int *data, int step, int choose, int total)
+void dfs_zuhe(int *data, int start, int step, int choose, int total)
 {
         int index;
 
-        //printf("step @ %d\n", step);
         if (step == choose) {
+                sum ++;
                 for (index = 0; index < choose; index++) {
-                        printf("out %d ", out[index]);
+                        printf("%d ", out[index]);
                 }
-                printf("\n");
+                printf("zuhe sum %d\n", sum);
                 return;
         }
-        printf("step %d\n", step);
-        for (index = step; index < total; index++) {
+        for (index = start; index < total; index++) {
                 if (!visit[index]) {
-                        printf("add index %d @ step %d\n", index, step);
+                        //printf("add %d @ step %d\n", data[index], step);
                         out[step] = data[index];
                         visit[index] = 1;
-                        dfs_zuhe(data, step + 1, choose, total);
+                        dfs_zuhe(data, index + 1, step + 1, choose, total);
                         visit[index] = 0;
                 }
         }
@@ -57,7 +57,8 @@ int main()
         memset(array, 0, sizeof(array));
         memset(visit, 0, sizeof(visit));
         memset(out, 0, sizeof(out));
-        int data[] = {1, 2, 3};
-        //dfs_pailie(data, 0, 3);
-        dfs_zuhe(data, 0, 2, 3);
+        sum = 0;
+        int data[] = {1, 2, 3, 4};
+        dfs_pailie(data, 0, 0, 3, 4); /* A 4 3 */
+        dfs_zuhe(data, 0, 0, 3, 4);  /*C 42 */
 }
