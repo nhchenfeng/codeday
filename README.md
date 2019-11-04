@@ -18,7 +18,7 @@
    						dfs(y, step + 1);
    				}
    		}
-       unmark(x);   /* 考虑是否需要回溯 */
+         unmark(x);   /* 考虑是否需要回溯 */
    }
    ```
 
@@ -116,10 +116,10 @@
     		list_first++;
     		while (list_last < list_fist) {
     				pre = &node_array[list_last];
-           if (pre == dst) {
-             add_ret();
-           }
-    				list_last++;
+         		list_last++;
+               if (pre == dst) {
+                  add_ret();
+               }
     				for (y = cur.adj) {
     				    cur.xxx = y.xxx;
                cur.step = pre->step + 1;
@@ -141,10 +141,11 @@
    {
        int index;
        dis[src] = 0;
-   		array[list_first] = src;
+   	 array[list_first] = src;
        list_first++;
-     	while (list_last < list_first) {
+     	 while (list_last < list_first) {
           pre = array[list_last];
+          list_last++;
           for (index = pre; index < col; index++) {
              if (map[pre][index] && dis[pre] + map[pre][index] < dis[index]) {
                	dis[index] = dis[pre] + map[pre][index] < dis[index]; /* 关键一步 小于更新 */
