@@ -1,20 +1,30 @@
-#include <iostream>
-#include <algorithm>
-#include <stdio.h>
-using namespace std;
-int w[35000], d[35000], dp[35000];
-int main()
+int max(int a, int b)
 {
-	int n, m;
-	while (scanf("%d%d", &n, &m) != EOF) {
-		for (int i = 1; i <= n; i++)
-			scanf("%d%d", &w[i], &d[i]);
-		for (int i = 1; i <= n; i++) {
-			for (int j = m; j >= w[i]; j--) {
-				dp[j] = max(dp[j], dp[j - w[i]] + d[i]);
-			}
-		}
-		printf("%d\n", dp[m]);
-	}
-	return 0;
+    return (a > b) ? a : b;
+}
+
+int maxSubArrayLen(int* nums, int numsSize, int k)
+{
+    int i;
+    int j;
+    int sum = 0;
+    int maxLen = 0;
+
+    if ((nums == 0) || (numsSize == 0)) {
+        return 0;
+    }
+    int dpSum[numsSize + 1];
+    memset(dpSum, 0, sizeof(int) * (numsSize + 1));
+
+    for (i = 0; i < numsSize; i++) {
+        sum += nums[i];
+        dpSum[i+1] = sum;
+        for (j = i; j >= 0; j--) {
+            if ((dpSum[i+1] - dpSum[j]) == k) {
+                maxLen = max(maxLen, i - j +  1);
+            }
+        }
+    }
+
+    return maxLen;
 }

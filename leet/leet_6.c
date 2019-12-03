@@ -70,6 +70,9 @@ char *convert(char *s, int numRows)
 	if (!s || numRows == 0)
 		return NULL;
 	pre_dir = 0;
+	if (numRows == 1) {
+		return s;
+	}
 	for (loop = 0; loop < strlen(s); loop++) {
 		max_row = MAX(max_row, map_row);
 		max_col = MAX(max_col, map_col);
