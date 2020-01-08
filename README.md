@@ -315,3 +315,26 @@
    	}
    }
    ```
+
+   滑动窗口模板
+   ```
+   int window(int *data, int len)
+   {
+           int hash[MAX_NODE];
+	   int left;
+	   int right;
+
+	   for (right = 0; right < len; right++) {
+	           hash[data[r]]++;
+		   update result;
+		   while (l < r && result not okay) {
+		         hash[data[left]]--; 
+			 le++;
+		   }
+
+                   len = right - left + 1;
+		   ans = ...
+	   }
+	   return ans;
+   }
+   ```
