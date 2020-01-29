@@ -1,6 +1,15 @@
 {
     "files.associations": {
         "random": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "ios": "c",
+        "__locale": "c",
+        "__string": "c",
+        "filesystem": "c",
+        "string": "c",
+        "string_view": "c",
+        "chrono": "c",
+        "cstdlib": "c",
+        "string.h": "c"
     }
 }
