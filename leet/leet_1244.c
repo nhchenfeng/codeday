@@ -25,7 +25,10 @@ Leaderboard *leaderboardCreate()
 
 void leaderboardAddScore(Leaderboard *obj, int playerId, int score)
 {
-	array[playerId].score += 
+	array[playerId].score += score;
+	if (array[playerId].score > array[0].score) {
+		
+	}
 }
 
 int leaderboardTop(Leaderboard *obj, int K)

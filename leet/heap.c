@@ -70,6 +70,13 @@ void heap_up(int *data, int index, int size)
 	}
 }
 
+
+/*
+优先队列：
+进来，data[size] = input, 然后冒上来
+出去，data[0] = data[size - 1] 冒下去
+*/
+
 void heap_add(int data)
 {
 	heap_data[heap_size] = data;
@@ -89,12 +96,42 @@ int heap_pop()
 	return data;
 }
 
-
 /*
-优先队列：
-进来，data[size] = input, 然后冒上来
-出去，data[0] = data[size - 1] 冒下去
+top-k:
 */
+
+void max_down(int *data, int index, int size)
+{
+	int tmp;
+	int dad = index;
+	int son = dad * 2 + 1;
+	int little = dad;
+	if (son < size && data[son] < data[little]) {
+		little = son;
+	}
+	if (son + 1 < size && data[son + 1] < data[little]) {
+		little = son + 1;
+	}
+	if (little != dad) {
+		tmp = data[little];
+		data[little] = data[dad];
+		data[dad] = tmp;
+		max_down(data, little, size);
+	}
+}
+
+int top_k(int *data, int size, int k)
+{
+	int loop;
+	memset(heap_data, -1, sizeof(heap_data));
+	for (loop = 0; loop < size; loop++) {
+		if (data[loop] > heap_data[0]) {
+			heap_data[0] = data[loop];
+			max_down(heap_data, 0, k);
+		}
+	}
+	return heap_data[0];
+}
 
 void show(int *data, int left, int right)
 {
@@ -130,5 +167,6 @@ int main()
 	for (loop = 0; loop < 3; loop++) {
 		printf("%d\n", heap_pop());
 	}
+	printf("top 5 data1 %d\n", top_k(data1, ARRAY_SIZE(data1), 5));
 	return 0;
 }
