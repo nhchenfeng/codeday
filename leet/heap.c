@@ -32,7 +32,7 @@ void heap_down(int *data, int index, int size)
 		tmp = data[max];
 		data[max] = data[dad];
 		data[dad] = tmp;
-		heap_down(data, max, size);	
+		heap_down(data, max, size);
 	}
 }
 

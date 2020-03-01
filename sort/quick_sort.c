@@ -4,44 +4,27 @@
 
 #define ARRAY_SIZE(X) (sizeof(X) / sizeof((X)[0]))
 
-/*
-快速排序，从数组中找一个基准点，一般就选择开头
-遍历数组，将比它小的放到它前边去，比它大的放到它后边去
-每次确定了一个位置
-然后递归
-问题的关键就在于如何遍历，把比它小的和比它大的做好, 这里采用算法：
-遍历把比基准小的都放到放到它前边，最后的右值于基准交换
-left作为pivot, store_index作为返回的pivot所在的地方
-从left + 1到right，如果小于等于pivot的化，则放到store_index的地方，store_index++
-结束时，store_index - 1所在的地方，就是pivot应该放的地方，此时store_index前边的都小于等于pivot
-因此store_index - 1为left的最右值，此时交换pivot和最右值，即store_index - 1
-考虑store_index有3个可能:
-最左边，即没有比pivot大的，此时store_index - 1即为本身，都比pivot大，没有发生交换
-最右边，都比pivot小，此时store_index为right + 1, store_index - 1也一样为最右值
-中间，则store_index - 1为left的右值
-*/
-
 int partition(int *data, int left, int right)
 {
 	int loop;
 	int tmp;
-	int store_index = left + 1;
-	int start = left;
+	int pivot = data[left];
+	int store_index = left + 1; /* store_index 右边的相互交换，先不带基准 */
+
 	if (left >= right)
 		return left;
-	int pivot = data[left];
+
 	for (loop = left + 1; loop <= right; loop++) {
-		if (data[loop] <= pivot) {
-			tmp = data[store_index];
-			data[store_index] = data[loop];
-			data[loop] = tmp;
+		if (data[loop] < pivot) {
+			tmp = data[loop];
+			data[loop] = data[store_index];
+			data[store_index] = tmp;
 			store_index++;
 		}
 	}
-	data[start] = data[store_index - 1];
+	data[left] = data[store_index - 1];
 	data[store_index - 1] = pivot;
 	return store_index - 1;
-	printf("pivot %d index %d\n", pivot, store_index);
 }
 
 void sort(int *data, int left, int right)
