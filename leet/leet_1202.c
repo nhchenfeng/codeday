@@ -30,16 +30,14 @@ void union_circle(int x, int y, int *father)
 	}
 }
 
-static char **array;
+static int **array;
 static int *len_array;
 
 void alloc_array(int size)
 {
 	int loop;
-	*array = malloc(size * sizeof(char *));
-	for (loop = 0; loop < size; loop++) {
-		array[loop] = malloc(size);
-	}
+	array = (int **)malloc(size * sizeof(int *));
+
 	len_array = malloc(sizeof(int) * size);
 	memset(len_array, 0, sizeof(int) * size);
 }
@@ -60,6 +58,7 @@ char *smallestStringWithSwaps(char *s, int **pairs, int pairsSize,
 	int index;
 	int *tmp;
 	int j;
+	char *ans;
 
 	if (!s || !pairs || !pairsSize)
 		return s;
@@ -67,10 +66,11 @@ char *smallestStringWithSwaps(char *s, int **pairs, int pairsSize,
 	len = strlen(s);
 	source = s;
 	tmp = (int *)malloc(sizeof(int) * len);
-	father = (int *)malloc(len);
+	ans = (char *)malloc(len + 1);
+	ans[len] = 0;
+	father = (int *)malloc(len * sizeof(int));
 	init(len, father);
 	alloc_array(len);
-
 	/* union biggger link to little */
 	for (i = 0; i < pairsSize; i++) {
 		if (pairs[i][0] < pairs[i][1]) {
@@ -81,6 +81,18 @@ char *smallestStringWithSwaps(char *s, int **pairs, int pairsSize,
 	}
 	for (i = 0; i < len; i++) {
 		index = find(i, father);
+		len_array[index]++;
+	}
+
+	for (i = 0; i < len; i++) {
+		if (len_array[i]) {
+			array[i] = (int *)malloc(len_array[i] * sizeof(int));
+		}
+		len_array[i] = 0;
+	}
+
+	for (i = 0; i < len; i++) {
+		index = find(i, father);
 		/* set the index to array */
 		array[index][len_array[index]] = i;
 		len_array[index]++;
@@ -89,25 +101,13 @@ char *smallestStringWithSwaps(char *s, int **pairs, int pairsSize,
 	for (i = 0; i < len; i++) {
 		if (len_array[i]) {
 			/* tmp is sorted, array is orign, and origin index is from little to big */
-			memcpy(tmp, array[i], len_array[i]);
+			memcpy(tmp, array[i], len_array[i] * sizeof(int));
 			qsort(tmp, len_array[i], sizeof(int), compare);
 			for (j = 0; j < len_array[i]; j++) {
-				source[array[i][j]] = tmp[j];
+				//printf("%c - %c\n",  source[array[i][j]], source[tmp[j]]);
+				ans[array[i][j]] = source[tmp[j]];
 			}
 		}
 	}
-
-	return s;
-}
-
-int main()
-{
-	char *ret;
-	int pair[][2] = {
-		{0, 3},
-		{1, 2}
-	};
-	int col = 2;
-	ret = smallestStringWithSwaps("dcab", pair, 2, &col);
-	return 0;
+	return ans;
 }
