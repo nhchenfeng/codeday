@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_NODE  10002
+#define MAX_NODE 10002
 
 struct node {
 	int id;
@@ -27,7 +27,6 @@ void leaderboardAddScore(Leaderboard *obj, int playerId, int score)
 {
 	array[playerId].score += score;
 	if (array[playerId].score > array[0].score) {
-		
 	}
 }
 
