@@ -283,3 +283,74 @@ void divide_sort(int *data, int size)
 
 
 ### 基数排序
+算法： 考虑整数或者字符串都是一样的，先将个位的排序，然后将结果按照十位的排序，然后再高位，这样最高的影响权重越大
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+
+#define ARRAY_SIZE(x)        (sizeof((x)) / sizeof((x)[0]))
+#define MAX(a, b)            ((a) > (b) ? (a) : (b))
+
+
+int max_exp(int *data, int size)
+{
+	int loop;
+	int count = 1;
+	int base = 10;
+	int max = INT_MIN;
+
+	for (loop = 0; loop < size; loop++) {
+		max = MAX(max, data[loop]);
+	}
+	while(max / base) {
+		base = base * 10;
+		count++;
+	}
+	return count;
+}
+
+void radix_sort(int *data, int size)
+{
+	int exp;
+	int radix = 1;
+	int i, j, z;
+	int count[11] = { 0 };
+	int index;
+
+	int *tmp = (int *)malloc(sizeof(int) * size);
+	exp = max_exp(data, size);
+	printf("exp %d\n", exp);
+	for (i = 1; i <= exp; i++) {
+		memset(count, 0, sizeof(count));
+		for (j = 0; j < size; j++) {
+			index = (data[j] / radix) % 10; /* %10 is important */
+			count[index]++;
+		}
+		for (z = 1; z <= 9; z++) {
+			count[z] += count[z - 1];  /* 每个开始的位置等于前边的个数的和，count[1] = 0, 前边有个偏移 +1 */
+		}
+		for (j = size - 1; j >= 0; j--) {  /* 这里只能从后往前，让保持稳定 */
+			index = (data[j] / radix) % 10;
+			tmp[count[index] - 1] = data[j];
+			count[index]--;
+		}
+		memcpy(data, tmp, sizeof(int) * size);
+		radix = radix * 10;
+		for (j = 0; j < size; j++) {
+			printf("%d ", tmp[j]);
+		}
+		printf("\n");
+	}
+}
+
+int main()
+{
+	int loop;
+	int a[] = {121, 11, 131, 5, 65, 111, 89, 12, 89, 90, 100, 77, 11111, 99, 89};
+	//int a[] = {91, 82, 73, 33, 44, 111};
+	radix_sort(a, ARRAY_SIZE(a));
+	printf("\n");
+}
+```
