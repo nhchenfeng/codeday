@@ -329,7 +329,7 @@ void radix_sort(int *data, int size)
 			count[index]++;
 		}
 		for (z = 1; z <= 9; z++) {
-			count[z] += count[z - 1];  /* 每个开始的位置等于前边的个数的和，count[1] = 0, 前边有个偏移 +1 */
+			count[z] += count[z - 1];  /* 每个count在tmp中存储的位置，比如count[1] = 10，则最后一个放在index 10的位置 */
 		}
 		for (j = size - 1; j >= 0; j--) {  /* 这里只能从后往前，让保持稳定 */
 			index = (data[j] / radix) % 10;
