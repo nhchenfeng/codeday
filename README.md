@@ -387,5 +387,33 @@ int get()
         return ret;
 }
 ```
-最后总结，没有算法，上来开搞
->>>>>>> d9e90a47925de200f7ab016cb543437775131d16
+### 差分和前缀
+```
+a[0], a[1], a[2], a[3] ... , a[n]
+
+前缀和 s[i] = a[0] + a[1] + a[2] + .... + a[i]
+前缀和用途O(1) 求区间总和 sum[l, r]=s[r] − s[l − 1]
+差分 b[i] = a[i] - a[i - 1]
+b[0] = a[0]
+差分有如下性质：
+对a数组区间[l,r]同时加上c的操作可转化为:
+     {
+         int l,r,c;
+         b[l]+=c;
+         b[r+1]-=c;
+     }
+对b数组求前缀和即可得到原数组a
+for(int i= 1;i<= n;i++)
+     b[i] += b[i-1];
+
+如：
+	for (loop = 0; loop < bookingsSize; loop++) {
+		b[bookings[loop][0]] += bookings[loop][2];
+		b[bookings[loop][1] + 1] -= bookings[loop][2];
+	}
+
+	for (loop = 1; loop <= n; loop++) {
+		sum += b[loop];
+        a[loop] = sum;
+	}
+```

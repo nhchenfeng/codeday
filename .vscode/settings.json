@@ -10,6 +10,11 @@
         "string_view": "c",
         "chrono": "c",
         "cstdlib": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "array": "c",
+        "*.tcc": "c",
+        "unordered_map": "c",
+        "initializer_list": "c",
+        "utility": "c"
     }
 }
