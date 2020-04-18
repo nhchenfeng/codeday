@@ -417,3 +417,26 @@ for(int i= 1;i<= n;i++)
         a[loop] = sum;
 	}
 ```
+### 字符串分割 strsep
+```
+void split_to_node(struct node *data, char *str)
+{
+	char *tmp = strdup(str);
+	char *index;
+	int first = 0;
+
+	data->str = str;
+	data->len = strlen(str);
+	for (index = strsep(&tmp, " "); index != NULL;
+	     index = strsep(&tmp, " ")) {
+		if (!first) {
+			memcpy(data->first, index, strlen(index));
+			data->first[strlen(index)] = 0;
+			first = 1;
+		}
+		memcpy(data->last, index, strlen(index));
+		data->last[strlen(index)] = 0;
+	}
+    free(tmp);
+}
+```
