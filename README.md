@@ -279,14 +279,7 @@ dp(n, v) = {
 添加一个新边进来
 */
 ```
-#define MAX_NODE   1024 * 4
 
-struct edge_
-{
-	int to;
-	int w;
-	int next;
-};
 
 <<<<<<< HEAD
    ```
@@ -324,8 +317,17 @@ struct edge_
    }
    ```
 =======
-static struct edge_ edge[MAX_NODE];
-static int head[MAX_NODE];
+#define MAX_EDGE   1024 * 4
+
+struct edge_
+{
+	int to;
+	int w;
+	int next;
+};
+
+static struct edge_ edge[MAX_EDGE];
+static int head[MAX_EDGE];
 static int cnt;
 void init_local()
 {
