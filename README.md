@@ -440,3 +440,66 @@ void split_to_node(struct node *data, char *str)
     free(tmp);
 }
 ```
+### 单调队列
+```
+给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。
+
+示例:
+
+输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
+输出: [3,3,5,5,6,7] 
+解释: 
+
+  滑动窗口的位置                最大值
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*
+单调队列，递减只留大的，每次元素进来把优先级比自己低的赶走(数值小的出队)，只留下大的
+队首与当前的游标大于K时，队首出队
+*/
+
+int *maxSlidingWindow(int *nums, int numsSize, int k, int *returnSize)
+{
+	int loop;
+	int *list;
+	int *ans;
+	int left = 0;
+	int right = 0;
+	int ans_size = 0;
+	if (!nums || !numsSize) {
+		*returnSize = 0;
+		return NULL;
+	}
+	list = (int *)malloc(numsSize * sizeof(int));
+	ans = (int *)malloc(numsSize * sizeof(int));
+
+	for (loop = 0; loop < numsSize; loop++) {
+		while(left < right && nums[list[right - 1]] <= nums[loop]) /* 这里写法较为巧妙，第一个天然入队 */
+			right--;
+
+		list[right++] = loop;
+		if (loop - list[left] >= k) { /* 队首太老，压出 */
+			left++;
+		}
+		if (loop >= k - 1) {
+			ans[ans_size++] = nums[list[left]];
+		}
+	}
+	*returnSize = ans_size;
+	return ans;
+}
+```

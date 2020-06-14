@@ -17,6 +17,8 @@
         "initializer_list": "c",
         "utility": "c",
         "stdlib.h": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "limits": "c",
+        "algorithm": "c"
     }
 }
