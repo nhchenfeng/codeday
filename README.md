@@ -298,7 +298,7 @@ dp(n, v) = {
    ```
    int window(int *data, int len)
    {
-           int hash[MAX_NODE];
+           int hash[MAX_NODE] = {0};
 	   int left;
 	   int right;
 
@@ -504,4 +504,247 @@ int *maxSlidingWindow(int *nums, int numsSize, int k, int *returnSize)
 	*returnSize = ans_size;
 	return ans;
 }
+```
+
+### 前缀树
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct node {
+	struct node *child[26];
+	int num;
+	int end;
+	int step;
+};
+
+static int sum;
+
+struct node *creat_node()
+{
+	struct node *nd = (struct node *)malloc(sizeof(struct node));
+	memset(nd, 0, sizeof(*nd));
+	return nd;
+}
+
+void dfs(struct node *tree)
+{
+	int loop;
+    int flag = 0;
+
+	for (loop = 0; loop < 26; loop++) {
+		if (tree->child[loop]) {
+			dfs(tree->child[loop]);
+            flag = 1;
+        }
+	}
+    if (flag == 0)
+        sum += tree->step;
+}
+
+void insert_node(struct node *root, char *data)
+{
+	int next;
+	int len = strlen(data);
+
+	for (next = len - 1; next >= 0; next--) {
+		if (!root->child[data[next] - 'a']) {
+			root->child[data[next] - 'a'] = creat_node();
+		} else {
+			root->child[data[next] - 'a']->num++;
+		}
+		root = root->child[data[next] - 'a'];
+	}
+	root->step = len + 1;
+	root->end = 1;
+}
+
+int minimumLengthEncoding(char **words, int wordsSize)
+{
+	int loop;
+	int next;
+	int len;
+	struct node *tree;
+	sum = 0;
+
+	if (!words || !wordsSize)
+		return 0;
+
+	tree = creat_node();
+	for (loop = 0; loop < wordsSize; loop++) {
+		insert_node(tree, words[loop]);
+	}
+
+	dfs(tree);
+	return sum;
+}
+```
+
+搜索二叉树
+```
+
+leet 315
+给定一个整数数组 nums，按要求返回一个新数组 counts。数组 counts 有该性质： counts[i] 的值是  nums[i] 右侧小于 nums[i] 的元素的数量。
+
+示例:
+
+输入: [5,2,6,1]
+输出: [2,1,1,0] 
+解释:
+5 的右侧有 2 个更小的元素 (2 和 1).
+2 的右侧仅有 1 个更小的元素 (1).
+6 的右侧有 1 个更小的元素 (1).
+1 的右侧有 0 个更小的元素.
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/count-of-smaller-numbers-after-self
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*
+求右边比自己小的树，简单的想法是把自己跟右边所有的数字对比一下
+为了简化对比，可以去掉一些不必要的操作，利用二叉树搜索树，对比的时候如果比当前节点大
+加上当前节点的左侧的个数即可
+
+因此，建立树的时候，比当前节点小，当前节点的left_count+1
+比当前节点大，当前节点的count = cur.count + 1;
+*/
+
+struct node {
+	struct node *left;
+	struct node *right;
+	int data;
+	int left_count;
+	int count;
+};
+
+static int insert_node(struct node *root, int val, int count)
+{
+	//printf("insert %d root val %d count %d\n", val, root->data, count);
+	if (val > root->data) {
+		count += root->left_count + 1;
+		if (root->right) {
+			return insert_node(root->right, val, count);
+		} else {
+			root->right = (struct node *)malloc(sizeof(struct node));
+			memset(root->right, 0, sizeof(struct node));
+			root->right->data = val;
+			root->right->count = count;
+			return count;
+		}
+	} else {
+		root->left_count += 1;
+		if (root->left) {
+			return insert_node(root->left, val, count);
+		} else {
+			root->left = (struct node *)malloc(sizeof(struct node));
+			memset(root->left, 0, sizeof(struct node));
+			root->left->data = val;
+			root->left->count = count;
+			return count;		
+		}
+	}
+}
+
+int *countSmaller(int *nums, int numsSize, int *returnSize)
+{
+	int loop;
+	int *ans;
+	struct node root;
+
+	if (!nums || !numsSize) {
+		*returnSize = 0;
+		return NULL;
+	}
+	ans = (int *)malloc(numsSize * sizeof(int));
+	root.count = 0;
+	root.left_count = 0;
+	root.data = nums[numsSize - 1];
+	root.left = NULL;
+	root.right = NULL;
+	ans[numsSize - 1] = 0;
+	for (loop = numsSize - 2; loop >= 0; loop--) {
+		ans[loop] = insert_node(&root, nums[loop], 0);
+		//printf("loop %d insert %d got %d\n", loop, nums[loop], ans[loop]);
+	}
+	*returnSize = numsSize;
+	return ans;
+}
+```
+
+二分查找
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <limits.h>
+#include <math.h>
+
+/*
+二分查找，返回左边界
+*/
+
+static int size;
+static int total;
+
+int avilable(int *data, int key)
+{
+	int loop;
+	int tsum = 0;
+	int tcount = 0;
+
+	for (loop = 0; loop < size; loop++) {
+		tsum += data[loop];
+		if (tsum < key) {
+			continue;
+		} else {
+			tsum = 0;
+			tcount++;
+			if (tcount > total)
+				return 1;
+		}
+	}
+	tcount--;
+	if (tcount >= total) {
+		return 1;
+	}
+	return 0;
+}
+
+int binary_search(int *data, int left, int right)
+{
+	int mid = (right - left) / 2 + left;
+
+	if (right - left == 1) {
+		if (avilable(data, right)) {
+			return right;
+		}
+		if (avilable(data, left)) {
+			return left;
+		}
+		return mid;
+	}
+
+	if (avilable(data, mid)) {
+		left = mid;
+	} else {
+		right = mid;
+	}
+	return binary_search(data, left, right);
+}
+
+int maximizeSweetness(int *sweetness, int sweetnessSize, int K)
+{
+	if (!sweetness || !sweetnessSize) {
+		return 0;
+	}
+	size = sweetnessSize;
+	total = K;
+	return binary_search(sweetness, 0, INT_MAX);
+}
+
 ```
