@@ -267,10 +267,11 @@ dp(n, v) = {
 }
 */
 ```
-存图与遍历
+### 存图与遍历
 
 存图一般有邻接矩阵，邻接表。 其中邻接表的构造需要每次alloc，出错概率较大，邻接矩阵的空间复杂度较大
 可以用数组模拟邻接表 链式前向星存图，空间复杂度和遍历的时间复杂度都是最优，代码也比较简洁
+```
 /*
 链式向前星存图 -- 邻接数组存图
 初始化一个head数组，head的数组坐标index是from点
@@ -278,8 +279,8 @@ dp(n, v) = {
 新边的next置位为head[from]，相当于每次在链表的头上
 添加一个新边进来
 */
-
-   ```
+```
+```
 =======
 #define MAX_EDGE   1024 * 4
 
@@ -312,20 +313,20 @@ void add_edge(int from, int to, int w)
 */
 ```
 
-   ```
-   一个有权图，求权最小的最小生成数，又叫 xxx 算法，忘了
-   首先将所有的边的权排序，并初始化一个并查集
-   然后将边的权从大到小排序，例如数组 map[x][2]  x 从0开始往下，依次从大到小排列完成
-   for(index = 0; index < size; index ++) {
-   	if (find(index[x][0], father) != find(index[x][1], father)) {
-   			union_circle(index[x][0], index[x][1]);
-   			add_ret(index);
-   	}
-   }
-   ```
+```
+一个有权图，求权最小的最小生成数，又叫 xxx 算法，忘了
+首先将所有的边的权排序，并初始化一个并查集
+然后将边的权从大到小排序，例如数组 map[x][2]  x 从0开始往下，依次从大到小排列完成
+for(index = 0; index < size; index ++) {
+if (find(index[x][0], father) != find(index[x][1], father)) {
+		union_circle(index[x][0], index[x][1]);
+		add_ret(index);
+}
+}
+ ```
 
-   滑动窗口模板
-   ```
+### 滑动窗口模板
+```
    int window(int *data, int len)
    {
            int hash[MAX_NODE] = {0};
@@ -345,8 +346,9 @@ void add_edge(int from, int to, int w)
 	   }
 	   return ans;
    }
+```
 
-堆与优先队列，K问题
+### 堆与优先队列，K问题
 考虑使用一个数组模拟二叉树，根节点在1，左边的为2n，右边的为2n + 1
 如求解K个最大的数，或者优先队列，往其中添加的无序，但是读取的是有序的
 ```
