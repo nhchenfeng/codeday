@@ -278,10 +278,40 @@ dp(n, v) = {
 新边的next置位为head[from]，相当于每次在链表的头上
 添加一个新边进来
 */
+
+   ```
+=======
+#define MAX_EDGE   1024 * 4
+
+struct edge_
+{
+	int to;
+	int w;
+	int next;
+};
+
+static struct edge_ edge[MAX_EDGE];
+static int head[MAX_EDGE];
+static int cnt;
+void init_local()
+{
+	memset(head, -1, sizeof(head));
+	cnt = 0;
+}
+void add_edge(int from, int to, int w)
+{
+	edge[cnt].to = to;
+	edge[cnt].w = w;
+	edge[cnt].next = head[from];
+	head[from] = cnt++;  /* insert to the first index */
+}
+/*
+	for(loop = head[index]; loop != -1; loop = edge[loop].next) {
+		dfs(edge[loop].to);
+	}
+*/
 ```
 
-
-<<<<<<< HEAD
    ```
    一个有权图，求权最小的最小生成数，又叫 xxx 算法，忘了
    首先将所有的边的权排序，并初始化一个并查集
@@ -315,38 +345,7 @@ dp(n, v) = {
 	   }
 	   return ans;
    }
-   ```
-=======
-#define MAX_EDGE   1024 * 4
 
-struct edge_
-{
-	int to;
-	int w;
-	int next;
-};
-
-static struct edge_ edge[MAX_EDGE];
-static int head[MAX_EDGE];
-static int cnt;
-void init_local()
-{
-	memset(head, -1, sizeof(head));
-	cnt = 0;
-}
-void add_edge(int from, int to, int w)
-{
-	edge[cnt].to = to;
-	edge[cnt].w = w;
-	edge[cnt].next = head[from];
-	head[from] = cnt++;  /* insert to the first index */
-}
-/*
-	for(loop = head[index]; loop != -1; loop = edge[loop].next) {
-		dfs(edge[loop].to);
-	}
-*/
-```
 堆与优先队列，K问题
 考虑使用一个数组模拟二叉树，根节点在1，左边的为2n，右边的为2n + 1
 如求解K个最大的数，或者优先队列，往其中添加的无序，但是读取的是有序的
